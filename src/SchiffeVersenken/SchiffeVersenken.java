@@ -1,33 +1,26 @@
 package SchiffeVersenken;
 
-import java.util.ArrayList;
-
 public class SchiffeVersenken {
 
     public static SchiffeVersenken instance;
-
-    public boolean visible;
-    private Field[] fields = new Field[100];
     public static Schiff[] schiffe;
-    public boolean setup ;
+    private final Field[] fields = new Field[100];
+    public boolean visible;
+    public boolean setup;
 
+
+    public SchiffeVersenken() {
+        setup = true;
+        new GameWindow(550, 600);
+        initGame();
+
+    }
 
     public static void main(String[] args) {
         instance = new SchiffeVersenken();
     }
 
-
-    public SchiffeVersenken() {
-        setup = true;
-        new GameWindow(550,600);
-        initGame();
-
-    }
-
-
-
-    public void initGame(){
-
+    public void initGame() {
 
 
         schiffe = new Schiff[4];
@@ -43,12 +36,12 @@ public class SchiffeVersenken {
         int fieldHeight = 50;
         int a = 0;
 
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    fields[a] = new Field(fieldMarginLeft + j * fieldWidth, fieldMarginTop + i * fieldHeight, fieldWidth, fieldHeight, a);
-                    a++;
-                }
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                fields[a] = new Field(fieldMarginLeft + j * fieldWidth, fieldMarginTop + i * fieldHeight, fieldWidth, fieldHeight, a);
+                a++;
             }
+        }
     }
 
     public Field[] getFields() {

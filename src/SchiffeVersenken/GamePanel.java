@@ -15,9 +15,7 @@ public class GamePanel extends JPanel implements MouseListener {
     public static int waters = 0;
     public static ArrayList<Integer> contains;
     public static ArrayList<Integer> hitpoints = new ArrayList<>();
-    JLabel remaining = new JLabel("Du hast noch " + (30- waters) +" Fehlversuche und dir fehlen noch "+ (14-hits) + " Treffer!");
-
-
+    JLabel remaining = new JLabel("Du hast noch " + (30 - waters) + " Fehlversuche und dir fehlen noch " + (14 - hits) + " Treffer!");
 
 
     public GamePanel() {
@@ -26,7 +24,7 @@ public class GamePanel extends JPanel implements MouseListener {
         addMouseListener(this);
     }
 
-    public void reset(){
+    public void reset() {
         placed = false;
         len = 2;
         schiffid = 0;
@@ -46,16 +44,16 @@ public class GamePanel extends JPanel implements MouseListener {
         for (Field field : SchiffeVersenken.instance.getFields()) {
             field.draw(g2d);
         }
-        remaining.setBounds(20,507,500,50);
+        remaining.setBounds(20, 507, 500, 50);
 
         add(remaining);
-        if(!placed) {
+        if (!placed) {
             remaining.setText("Bitte Platziere die Schiffe!");
-        }else {
+        } else {
             remaining.setText("Du hast noch " + (30 - waters) + " Fehlversuche und dir fehlen noch " + (14 - hits) + " Treffer!");
         }
         repaint();
-        }
+    }
 
 
     public void checkField(int x, int y) {
@@ -71,128 +69,126 @@ public class GamePanel extends JPanel implements MouseListener {
                     field.setValue((FieldValue.TREFFER));
                     repaint();
                     hitpoints.add(field.getId());
-                    hits++ ;
+                    hits++;
                 }
                 break;
             }
         }
     }
+
     public void placeShips(int x, int y) {
-            Rectangle cursorHitbox = new Rectangle(x, y, 1, 1);
-            for (Field field : SchiffeVersenken.instance.getFields()) {
-                if (cursorHitbox.intersects(field)) {
-                    if (field.getValue() == FieldValue.EMPTY) {
-                        field.setValue(FieldValue.MARKER);
-                        repaint();
+        Rectangle cursorHitbox = new Rectangle(x, y, 1, 1);
+        for (Field field : SchiffeVersenken.instance.getFields()) {
+            if (cursorHitbox.intersects(field)) {
+                if (field.getValue() == FieldValue.EMPTY) {
+                    field.setValue(FieldValue.MARKER);
+                    repaint();
 
-                        String[] options = {"Norden", "Osten", "Süden", "Westen"};
-                        int a = JOptionPane.showOptionDialog(this, "Bitte wählen Sie die Himmelsrichtung aus, in die Ihr Schiff "+(len -1) +" zeigen soll", "Bitte auswählen!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-                        field.setValue(FieldValue.EMPTY);
-                        if(a== 0) {
-                            if (!isPossible(a, field)) {
-                                JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
-                                field.setValue(FieldValue.EMPTY);
-                                repaint();
-                            } else {
-                                SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
-                                for (int i = 0; i < len; i++) {
-
-                                    SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() - (i * 10);
-                                    contains.add(field.getId() - (i * 10));
-                                    SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
-                                    repaint();
-                                }
-                                schiffid++;
-                                len ++;
-
-                            }
-                        }
-                        else if(a== 1) {
-                            if (!isPossible(a, field)) {
-                                JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
-                                field.setValue(FieldValue.EMPTY);
-                                repaint();
-                            } else {
-                                SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
-                                for (int i = 0; i < len; i++) {
-
-                                    SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() + (i * 1);
-                                    contains.add(field.getId() + (i * 1));
-                                    SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
-                                    repaint();
-                                }
-                                schiffid++;
-                                len ++;
-
-                            }
-                        }
-                        else if(a== 2) {
-                            if (!isPossible(a, field)) {
-                                JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
-                                field.setValue(FieldValue.EMPTY);
-                                repaint();
-                            } else {
-                                SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
-
-                                for (int i = 0; i < len; i++) {
-                                    SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() + (i * 10);
-                                    contains.add(field.getId() + (i * 10));
-                                    SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
-                                    repaint();
-                                }
-                                schiffid++;
-                                len ++;
-
-                            }
-                        }
-                        else if(a== 3) {
-                            if (!isPossible(a, field)) {
-                                JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
-                                field.setValue(FieldValue.EMPTY);
-                                repaint();
-                            } else {
-                                SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
-                                for (int i = 0; i < len; i++) {
-                                    SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() - (i * 1);
-                                    contains.add(field.getId() - (i * 1));
-                                    SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
-                                    repaint();
-                                }
-                                schiffid++;
-                                len ++;
-
-                            }
-                        }
-
-                        if(len == 6){
-                            placed = true;
-                            SchiffeVersenken.instance.visible = false;
+                    String[] options = {"Norden", "Osten", "Süden", "Westen"};
+                    int a = JOptionPane.showOptionDialog(this, "Bitte wählen Sie die Himmelsrichtung aus, in die Ihr Schiff " + (len - 1) + " zeigen soll", "Bitte auswählen!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+                    field.setValue(FieldValue.EMPTY);
+                    if (a == 0) {
+                        if (isImpossible(a, field)) {
+                            JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
+                            field.setValue(FieldValue.EMPTY);
                             repaint();
-                        }
+                        } else {
+                            SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
+                            for (int i = 0; i < len; i++) {
 
+                                SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() - (i * 10);
+                                contains.add(field.getId() - (i * 10));
+                                SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
+                                repaint();
+                            }
+                            schiffid++;
+                            len++;
+
+                        }
+                    } else if (a == 1) {
+                        if (isImpossible(a, field)) {
+                            JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
+                            field.setValue(FieldValue.EMPTY);
+                            repaint();
+                        } else {
+                            SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
+                            for (int i = 0; i < len; i++) {
+
+                                SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() + (i);
+                                contains.add(field.getId() + (i));
+                                SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
+                                repaint();
+                            }
+                            schiffid++;
+                            len++;
+
+                        }
+                    } else if (a == 2) {
+                        if (isImpossible(a, field)) {
+                            JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
+                            field.setValue(FieldValue.EMPTY);
+                            repaint();
+                        } else {
+                            SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
+
+                            for (int i = 0; i < len; i++) {
+                                SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() + (i * 10);
+                                contains.add(field.getId() + (i * 10));
+                                SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
+                                repaint();
+                            }
+                            schiffid++;
+                            len++;
+
+                        }
+                    } else if (a == 3) {
+                        if (isImpossible(a, field)) {
+                            JOptionPane.showMessageDialog(this, "Das ist so nicht möglich! Bitte platzieren Sie ihr Schiff erneut!", "Unmögliche Position", JOptionPane.ERROR_MESSAGE);
+                            field.setValue(FieldValue.EMPTY);
+                            repaint();
+                        } else {
+                            SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
+                            for (int i = 0; i < len; i++) {
+                                SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() - (i);
+                                contains.add(field.getId() - (i));
+                                SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
+                                repaint();
+                            }
+                            schiffid++;
+                            len++;
+
+                        }
                     }
+
+                    if (len == 6) {
+                        placed = true;
+                        SchiffeVersenken.instance.visible = false;
+                        repaint();
+                    }
+
                 }
             }
         }
+    }
 
-    public boolean isPossible(int a, Field field){
+    public boolean isImpossible(int a, Field field) {
         //überschneidung
         boolean possible = true;
-        switch (a){
+        switch (a) {
             case 0 -> {
-                for(int i = 0; i < len; i++) {
-                    for(int in : contains){
+                for (int i = 0; i < len; i++) {
+                    for (int in : contains) {
                         if (field.getId() - (i * 10) == in) {
                             possible = false;
                             break;
                         }
                     }
                 }
-                }
+            }
             case 1 -> {
                 for (int i = 0; i < len; i++) {
-                    for(int in : contains){
-                        if (field.getId() + (i * 1) == in) {
+                    for (int in : contains) {
+                        if (field.getId() + (i) == in) {
                             possible = false;
                             break;
                         }
@@ -200,8 +196,8 @@ public class GamePanel extends JPanel implements MouseListener {
                 }
             }
             case 2 -> {
-                for(int i = 0; i < len; i++) {
-                    for(int in : contains){
+                for (int i = 0; i < len; i++) {
+                    for (int in : contains) {
                         if (field.getId() + (i * 10) == in) {
                             possible = false;
                             break;
@@ -210,9 +206,9 @@ public class GamePanel extends JPanel implements MouseListener {
                 }
             }
             case 3 -> {
-                for(int i = 0; i < len; i++) {
+                for (int i = 0; i < len; i++) {
                     for (int in : contains) {
-                        if (field.getId() - (i * 1) == in) {
+                        if (field.getId() - (i) == in) {
                             possible = false;
                             break;
                         }
@@ -222,85 +218,76 @@ public class GamePanel extends JPanel implements MouseListener {
         }
         //Rand
 
-        switch (a){
+        switch (a) {
             case 0 -> {
-                for(int i = 0; i < len; i++) {
-                        if (field.getId() - (i * 10) < 0) {
-                            possible = false;
-                            break;
-                        }
+                for (int i = 0; i < len; i++) {
+                    if (field.getId() - (i * 10) < 0) {
+                        possible = false;
+                        break;
+                    }
                 }
             }
             case 1 -> {
                 int row = field.getId() / 10;
                 for (int i = 0; i < len; i++) {
-                        if ((field.getId() + (i * 1)) /10 != row) {
-                            possible = false;
-                            break;
-                        }
+                    if ((field.getId() + (i)) / 10 != row) {
+                        possible = false;
+                        break;
+                    }
                 }
             }
             case 2 -> {
-                for(int i = 0; i < len; i++) {
-                        if (field.getId() + (i * 10) > 99) {
-                            possible = false;
-                            break;
-                        }
+                for (int i = 0; i < len; i++) {
+                    if (field.getId() + (i * 10) > 99) {
+                        possible = false;
+                        break;
+                    }
                 }
             }
             case 3 -> {
                 int row = field.getId() / 10;
-                for(int i = 0; i < len; i++) {
+                for (int i = 0; i < len; i++) {
 
-                        if ((field.getId() - (i * 1)) /10 != row || (field.getId() - (i * 1)<0 )) {
-                            possible = false;
-                            break;
-                        }
+                    if ((field.getId() - (i)) / 10 != row || (field.getId() - (i) < 0)) {
+                        possible = false;
+                        break;
+                    }
                 }
             }
         }
-
-
-        return possible;
+        return !possible;
     }
 
-    public void checkWin(){
-        if(hits == 14){
+    public void checkWin() {
+        if (hits == 14) {
             schiffVersenkt();
             JOptionPane.showMessageDialog(this, "Alle Schiffe versenkt! Glückwunsch!", "GAME OVER!", JOptionPane.INFORMATION_MESSAGE);
             SchiffeVersenken.instance.initGame();
             repaint();
-        }else if(waters == 30){
+        } else if (waters == 30) {
             SchiffeVersenken.instance.visible = true;
             repaint();
             JOptionPane.showMessageDialog(this, "Alle Versuche aufgebraucht! Viel Glück nächstes mal!", "GAME OVER!", JOptionPane.INFORMATION_MESSAGE);
-
             SchiffeVersenken.instance.initGame();
             repaint();
         }
 
     }
 
-    public void schiffVersenkt(){
-        for(Schiff schiff: SchiffeVersenken.schiffe){
-            if(schiff!= null) {
+    public void schiffVersenkt() {
+        for (Schiff schiff : SchiffeVersenken.schiffe) {
+            if (schiff != null) {
                 schiff.versenkt(hitpoints);
-
             }
         }
-
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
-        if(placed) checkField(e.getX(),e.getY());
-        if(!placed) placeShips(e.getX(),e.getY());
+        if (placed) checkField(e.getX(), e.getY());
+        if (!placed) placeShips(e.getX(), e.getY());
         checkWin();
         schiffVersenkt();
-
-
-
     }
 
     @Override

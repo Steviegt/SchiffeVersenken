@@ -7,10 +7,10 @@ public class GameWindow extends JFrame {
 
     public static GamePanel gamePanel;
 
-    public GameWindow(int width, int height){
+    public GameWindow(int width, int height) {
         setTitle("Schiffe Versenken");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(0,0,width,height);
+        setBounds(0, 0, width, height);
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
