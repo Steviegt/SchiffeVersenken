@@ -14,10 +14,8 @@ public class GameWindow extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-
         gamePanel = new GamePanel();
         getContentPane().add(gamePanel, BorderLayout.CENTER);
-
         setVisible(true);
 
     }
