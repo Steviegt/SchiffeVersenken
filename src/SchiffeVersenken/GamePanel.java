@@ -16,12 +16,20 @@ public class GamePanel extends JPanel implements MouseListener {
     public static ArrayList<Integer> contains;
     public static ArrayList<Integer> hitpoints = new ArrayList<>();
     JLabel remaining = new JLabel("Du hast noch " + (30 - waters) + " Fehlversuche und dir fehlen noch " + (14 - hits) + " Treffer!");
+    JButton restart = new JButton("Restart");
 
 
     public GamePanel() {
         setBackground(Color.WHITE);
         requestFocus();
         addMouseListener(this);
+        restart.addActionListener((e) -> {
+            String[] options = {"Ja", "Nein"};
+            int a = JOptionPane.showOptionDialog(this, "Sind Sie sicher, dass sie neu Starten wollen?", "Sind Sie sicher?!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
+            if (a == 0) {
+                SchiffeVersenken.instance.initGame();
+            }
+        });
     }
 
     public void reset() {
@@ -45,8 +53,10 @@ public class GamePanel extends JPanel implements MouseListener {
             field.draw(g2d);
         }
         remaining.setBounds(20, 507, 500, 50);
+        restart.setBounds(380, 517, 100, 30);
 
         add(remaining);
+        add(restart);
         if (!placed) {
             remaining.setText("Bitte Platziere die Schiffe!");
         } else {
@@ -83,7 +93,6 @@ public class GamePanel extends JPanel implements MouseListener {
                 if (field.getValue() == FieldValue.EMPTY) {
                     field.setValue(FieldValue.MARKER);
                     repaint();
-
                     String[] options = {"Norden", "Osten", "Süden", "Westen"};
                     int a = JOptionPane.showOptionDialog(this, "Bitte wählen Sie die Himmelsrichtung aus, in die Ihr Schiff " + (len - 1) + " zeigen soll", "Bitte auswählen!", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
                     field.setValue(FieldValue.EMPTY);
@@ -95,7 +104,6 @@ public class GamePanel extends JPanel implements MouseListener {
                         } else {
                             SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
                             for (int i = 0; i < len; i++) {
-
                                 SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() - (i * 10);
                                 contains.add(field.getId() - (i * 10));
                                 SchiffeVersenken.instance.getFields()[SchiffeVersenken.schiffe[schiffid].contains[i]].setValue(FieldValue.SCHIFF);
@@ -103,7 +111,6 @@ public class GamePanel extends JPanel implements MouseListener {
                             }
                             schiffid++;
                             len++;
-
                         }
                     } else if (a == 1) {
                         if (isImpossible(a, field)) {
@@ -121,7 +128,6 @@ public class GamePanel extends JPanel implements MouseListener {
                             }
                             schiffid++;
                             len++;
-
                         }
                     } else if (a == 2) {
                         if (isImpossible(a, field)) {
@@ -130,7 +136,6 @@ public class GamePanel extends JPanel implements MouseListener {
                             repaint();
                         } else {
                             SchiffeVersenken.schiffe[schiffid] = new Schiff(len);
-
                             for (int i = 0; i < len; i++) {
                                 SchiffeVersenken.schiffe[schiffid].contains[i] = field.getId() + (i * 10);
                                 contains.add(field.getId() + (i * 10));
@@ -139,7 +144,6 @@ public class GamePanel extends JPanel implements MouseListener {
                             }
                             schiffid++;
                             len++;
-
                         }
                     } else if (a == 3) {
                         if (isImpossible(a, field)) {
@@ -156,16 +160,13 @@ public class GamePanel extends JPanel implements MouseListener {
                             }
                             schiffid++;
                             len++;
-
                         }
                     }
-
                     if (len == 6) {
                         placed = true;
                         SchiffeVersenken.instance.visible = false;
                         repaint();
                     }
-
                 }
             }
         }
