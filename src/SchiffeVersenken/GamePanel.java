@@ -20,7 +20,7 @@ public class GamePanel extends JPanel implements MouseListener {
 
 
     public GamePanel() {
-        setBackground(Color.WHITE);
+        setBackground(Color.CYAN);
         requestFocus();
         addMouseListener(this);
         restart.addActionListener((e) -> {
@@ -262,7 +262,7 @@ public class GamePanel extends JPanel implements MouseListener {
     public void checkWin() {
         if (hits == 14) {
             schiffVersenkt();
-            JOptionPane.showMessageDialog(this, "Alle Schiffe versenkt! Glückwunsch!", "GAME OVER!", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Alle Schiffe versenkt! Glückwunsch!", "WIN!", JOptionPane.INFORMATION_MESSAGE);
             SchiffeVersenken.instance.initGame();
             repaint();
         } else if (waters == 30) {
